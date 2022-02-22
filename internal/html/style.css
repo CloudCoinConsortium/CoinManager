@@ -1,0 +1,116 @@
+body {
+  background: #eee;
+  margin: 0
+}
+
+
+.main {
+  display: flex;
+  justify-content: flex-start;
+  height: 600px;
+}
+
+.left {
+  width: 200px;
+  display: flex;
+  background: #ccc;
+  padding: 10px;
+  flex-direction: column
+}
+
+button {
+  margin: 8px
+}
+
+#backend {
+  font-weight: bold;
+}
+.panel {
+  display: flex;
+  flex: 1 auto;
+  flex-direction: column;
+}
+
+.toppanel {
+  background: #aacc44;
+  flex: 0 auto;
+  height: 64px;
+  text-align: center;
+  display: flex;
+  align-items:center;
+  flex-direction: column;
+  padding: 10px;
+}
+
+#raida {
+  display: flex;
+  align-items:center;
+  justify-content: center;
+
+}
+
+#info {
+  text-align: left;
+  padding: 40px;
+}
+
+table {
+  border-collapse: collapse
+}
+
+input[type="text"] {
+  height: 32px;
+  width: 340px;
+  outline: none;
+}
+
+table tr td {
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.m {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 100;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  background: #444;
+  opacity: 0.98;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.pf {
+  background: green;
+  width: 32px;
+  height 32px;
+  padding: 4px;
+  margin: 2px;
+}
+
+.rf {
+  background: red;
+  width: 32px;
+  height 32px;
+  padding: 4px;
+  margin: 2px;
+}
+
+button {
+  padding: 14px;
+  width: 140px;
+  height: 48px;
+  background-color: #3333ee;
+  color: white;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}

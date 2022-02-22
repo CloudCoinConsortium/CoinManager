@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+    <title>SuperRAIDA Client</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+  <div id="m0" class="m">
+    <div>
+    Create Wallet. Enter Wallet Name
+    </div>
+      <div>
+    <input type="text" name="walletname">
+      </div>
+      <div>
+    <button id="go0">Create</button>
+    <button id="cancel">Cancel</button>
+      </div>
+  </div>
+
+
+  <div id="m1" class="m">
+    <div>
+    Delete Wallet. Enter Wallet Name
+    </div>
+      <div>
+    <input type="text" name="walletnamedel">
+      </div>
+      <div>
+    <button id="go1">Delete</button>
+    <button id="cancel1">Cancel</button>
+      </div>
+  </div>
+
+  <div id="m2" class="m">
+    <div>
+    Detect. Copy-Paste CC file (JSON)
+    </div>
+      <div>
+
+        <textarea name="ccstack" rows=16 cols=120>
+        </textarea>
+      </div>
+      <div>
+    <button id="go2">Detect</button>
+    <button id="cancel2">Cancel</button>
+      </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  <div class="main">
+    <div class="left">
+      <button id="echo">Echo</button>
+      <button id="wallets">Wallets</button>
+      <button id="createwallet">Create Wallet</button>
+      <button id="deletewallet">Delete Wallet</button>
+      <button id="detect">Detect</button>
+    </div>
+
+    <div class="panel">
+      <div class="toppanel">
+        <div>Backend Status: <span id="backend">Unknown</span></div>
+        <div>Raida Status: <div id="raida"></div></div>
+      </div>
+
+      <div id="info">
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <script type="text/javascript">
+
+      $.ajax("http://localhost:8888/api/v1/skywallets/miroch.skyvault.cc", {
+        'success' : function(data, status, xhr) {
+            taskId = data.payload.id
+
+          // Timeout 1 second
+          setTimeout(
+            function() {
+              $.ajax("http://localhost:8888/api/v1/tasks/" + taskId, {
+                'success': function(data, status, xhr) {
+                  let payload = data.payload
+                  let denominations = payload.data.denominations
+
+                  let d1 = denominations[1]
+                  let d5 = denominations[5]
+                  let d25 = denominations[25]
+                  let d100 = denominations[100]
+                  let d250 = denominations[250]
+
+                  console.log(d1)
+                }
+              })
+            }, 1000)
+
+          console.log(taskId)
+        },
+      })
+
+    $("#m0").hide()
+    $("#m1").hide()
+    $("#m2").hide()
+
+    function doTaskPoll(id) {
+      $.ajax("http://localhost:8888/api/v1/tasks/" + id, {
+        'success' : function(data, status, xhr) {
+          console.log("task done")
+          console.log(data)
+
+          let payload = data.payload
+          if (payload.status == "completed") {
+            let data = payload.data
+            $("#info").html("Echo done. Online: <b>" + data.online + "/25</b>, pown:<b>" + data.pownstring + "</b>")
+            let h = ""
+
+            for (let i = 0; i < data.pownarray.length; i++) {
+              let st = data.pownarray[i]
+              if (st != 1) {
+                h += "<span class='rf'>" + i + "</span>"
+              } else {
+                h += "<span class='pf'>" + i + "</span>"
+              }
+            }
+
+            $("#raida").html(h)
+            return
+          }
+
+          $("#info").html("Doing Echo. Task ID " + id + ", Progress <b>" + payload.progress + "%</b>")
+
+          setTimeout(() => { doTaskPoll(id) }, 1000)
+
+        },
+
+        'error': function(xhr, txt, err) {
+          $("#info").html("Call Failed " + txt)
+        }
+      })
+    }
+
+    function doTaskPollCommon(id, f) {
+      $.ajax("http://localhost:8888/api/v1/tasks/" + id, {
+        'success' : function(data, status, xhr) {
+          console.log("task done")
+          console.log(data)
+
+          let payload = data.payload
+          if (payload.status == "completed" || payload.status == "error") {
+            let data = payload.data
+            h = f(data)
+            $("#raida").html(h)
+            return
+          }
+
+          $("#info").html("Doing... Task ID " + id + ", Progress <b>" + payload.progress + "%</b>")
+
+          setTimeout(() => { doTaskPollCommon(id, f) }, 1000)
+
+        },
+
+        'error': function(xhr, txt, err) {
+          $("#info").html("Call Failed " + txt)
+        }
+      })
+    }
+
+
+
+    $(document).ready(function() {
+      console.log("ready")
+
+
+      $("#cancel").click(function() {
+        $("#m0").hide()
+      })
+      $("#cancel1").click(function() {
+        $("#m1").hide()
+      })
+      $("#cancel2").click(function() {
+        $("#m2").hide()
+      })
+
+
+      $("#wallets").click(function() {
+        $.ajax("http://localhost:8888/api/v1/wallets", {
+          'success' : function(data, status, xhr) {
+            let wallets = "<table width=\"500\"><tr><td><b>Name</b></td><td><b>Balance</b></td></tr>"
+
+            for (let i = 0; i < data.payload.length; i++) {
+              let w = data.payload[i]
+
+              wallets += "<tr><td>" + w.Name + "</td><td>" + w.Balance + " CC</td></tr>"
+            }
+            
+            wallets += "</table>"
+            console.log(data)
+            $("#info").html(wallets)
+          },
+          'error': function(xhr, txt, err) {
+            $("#info").html("Get Wallets Failed")
+          }
+        })
+      })
+
+
+      $("#createwallet").click(function() {
+        $("#m0").show()
+      })
+
+      $("#deletewallet").click(function() {
+        $("#m1").show()
+      })
+
+      $("#detect").click(function() {
+        $("#m2").show()
+      })
+
+      $("#go0").click(function() {
+        console.log("click")
+        let v = $("input[name=walletname]").val()
+
+        let idata = {
+          'name':v
+        }
+
+        $("#m0").hide()
+        $.ajax({
+          url: "http://localhost:8888/api/v1/wallets",
+          dataType: 'json',
+          type: 'post',
+          contentType: 'application/json',
+          data: JSON.stringify(idata),
+          success: function(data, txt, xhr) {
+            if (data.status == "success") {
+              $("#info").html("Wallet has been created")
+            } else {
+              $("#info").html("Error " + data.payload.message)
+              console.log(data)
+            }
+          },
+          error: function(xhr, txt, err) {
+            $("#info").html("Create Wallet Failed")
+          }
+        })
+      })
+
+      $("#go1").click(function() {
+        console.log("click")
+        let v = $("input[name=walletnamedel]").val()
+
+        $("#m1").hide()
+        $.ajax({
+          url: "http://localhost:8888/api/v1/wallets/" + v,
+          type: 'delete',
+          success: function(data, txt, xhr) {
+            if (data.status == "success") {
+              $("#info").html("Wallet has been deleted")
+            } else {
+              $("#info").html("Error " + data.payload.message)
+              console.log(data)
+            }
+          },
+          error: function(xhr, txt, err) {
+            $("#info").html("Delete Wallet Failed: " + txt)
+          }
+        })
+      })
+
+          // Detect
+      $("#go2").click(function() {
+        console.log("click")
+        let v = $("textarea[name=ccstack]").val()
+
+        console.log("v")
+        console.log(v)
+
+        $("#m2").hide()
+
+        let cs
+        try {
+          cs = JSON.parse(v)
+        } catch(e) {
+            $("#info").html("Failed to parse json")
+          return
+        }
+
+        if (!('cloudcoin' in cs)) {
+            $("#info").html("Invalid stack file")
+          return
+        }
+
+        let idata = {
+          coins: []
+          }
+
+        for (let i = 0; i < cs.cloudcoin.length; i++) {
+          let cc = cs.cloudcoin[i]
+          idata.coins[i] = {
+           'sn' : parseInt(cc.sn, 10),
+            'ans' : cc.an
+          }
+        }
+
+
+        $.ajax({
+          url: "http://localhost:8888/api/v1/detect",
+          dataType: 'json',
+          type: 'post',
+          contentType: 'application/json',
+          data: JSON.stringify(idata),
+          success: function(data, txt, xhr) {
+            if (data.status != "success") {
+              $("#info").html("Failed " + data.payload.message)
+              return
+            }
+            let payload = data.payload
+            taskId = payload.id
+            $("#info").html("Detect sent. Task ID " + taskId)
+          doTaskPollCommon(taskId, (xdata) => {
+            console.log("DONE DETECT")
+            console.log(xdata)
+
+              $("#info").html("Done " + JSON.stringify(xdata))
+            return "xxxxxxxxxxxx"
+          })
+          },
+          error: function(xhr, txt, err) {
+            $("#info").html("Failed " + txt)
+          }
+        })
+      })
+
+
+      $("#echo").click(function() {
+        $("#info").html("Echoing RAIDA...")
+        $.ajax("http://localhost:8888/api/v1/echo", {
+          'timeout': 20000,
+          'success' : function(data, status, xhr) {
+            let payload = data.payload
+            taskId = payload.id
+            $("#info").html("Echo sent. Task ID " + taskId)
+            doTaskPoll(taskId)
+           },
+
+          'error': function(xhr, txt, err) {
+            $("#info").html("Echo Failed")
+          }
+        })
+      })
+
+
+      $("#backend").html("Connecting...")
+      $.ajax("http://localhost:8888", {
+        'timeout': 1000,
+
+        'success' : function(data, status, xhr) {
+          $("#backend").html("Connected")
+        },
+
+        'error': function(xhr, txt, err) {
+          console.log(txt)
+          console.log(err)
+          $("#backend").html("Not Connected")
+        }
+
+
+      })
+
+    })
+
+
+
+  </script>
+
+  </body>
+
+</html>
