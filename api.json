@@ -1,0 +1,3378 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "SuperRAIDA Client API",
+    "version": "1.0",
+    "description": "SuperRAIDA Client Backend API",
+    "contact": {
+      "name": "RaidaTech",
+      "url": "raida.tech",
+      "email": "support@cloudcoin.global"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8888/api/v1",
+      "description": "API v1"
+    }
+  ],
+  "paths": {
+    "/wallets": {
+      "get": {
+        "summary": "Get Wallets",
+        "tags": [
+          "API"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/WalletsResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                },
+                "examples": {
+                  "example2": {
+                    "value": {
+                      "status": "success",
+                      "payload": [
+                        {
+                          "name": "my wallet",
+                          "balance": 120,
+                          "denominations": {
+                            "1": 0,
+                            "5": 4,
+                            "25": 0,
+                            "100": 1,
+                            "250": 0
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "example-2": {
+                    "value": {
+                      "status": "success",
+                      "payload": [
+                        {
+                          "name": "string",
+                          "balance": 120,
+                          "denominations": {
+                            "1": 0,
+                            "5": 4,
+                            "25": 0,
+                            "100": 1,
+                            "250": 0
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "operationId": "get-wallets",
+        "description": "Gets a list of user's wallets"
+      },
+      "post": {
+        "summary": "Create a Wallet",
+        "operationId": "post-wallets",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "status": "error",
+                      "payload": {
+                        "code": 4121,
+                        "message": "Validation error. name: cannot be blank.",
+                        "details": {}
+                      }
+                    }
+                  },
+                  "example-2": {
+                    "value": {
+                      "status": "success",
+                      "payload": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Creates a wallet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWalletRequest"
+              }
+            }
+          }
+        },
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/wallets/{name}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "name",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "GET a wallet",
+        "tags": [
+          "API"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/WalletResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "status": "error",
+                      "payload": {
+                        "code": 4115,
+                        "message": "Wallet not found",
+                        "details": {}
+                      }
+                    }
+                  },
+                  "example-2": {
+                    "value": {
+                      "status": "success",
+                      "payload": {
+                        "name": "my wallet",
+                        "balance": 110,
+                        "denominations": {
+                          "1": 0,
+                          "5": 2,
+                          "25": 0,
+                          "100": 1,
+                          "250": 0
+                        }
+                      },
+                      "contents": [
+                        100,
+                        200
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-wallets-name",
+        "parameters": [
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "contents",
+            "description": "If true the contents of the wallet will be returned"
+          }
+        ],
+        "description": "Returns wallet contents"
+      },
+      "delete": {
+        "summary": "Delete a Wallet",
+        "operationId": "delete-wallets-name",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Deletes wallet",
+        "tags": [
+          "API"
+        ]
+      },
+      "put": {
+        "summary": "",
+        "operationId": "put-wallets-name",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Updates a wallet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWalletRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/echo": {
+      "get": {
+        "summary": "Echo",
+        "tags": [
+          "API"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskResponse"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-echo",
+        "description": "Echoes the SuperRAIDA"
+      }
+    },
+    "/detect": {
+      "post": {
+        "summary": "Detect",
+        "operationId": "post-detect",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Detects if coins are authentic",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DetectRequest"
+              }
+            }
+          }
+        },
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/pown": {
+      "post": {
+        "summary": "Pown",
+        "operationId": "post-pown",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Powns coins (Changes authenticity numbers)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PownRequest"
+              }
+            }
+          }
+        },
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/import": {
+      "post": {
+        "summary": "Imports coins",
+        "operationId": "post-import",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Imports cloudcoins. Each cloudcoin stack can be a file or a base64-encoded string. Stack, CC and PNG formats are supported.",
+        "tags": [
+          "API"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/unpack": {
+      "post": {
+        "summary": "Unpacker",
+        "operationId": "post-unpack",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/UnpackResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "status": "success",
+                      "payload": [
+                        {
+                          "sn": 1280910,
+                          "ans": [
+                            "33f726eb987f9c60c47dc96768c8f74c",
+                            "7332b296fea1b99180986cbffdcd1165",
+                            "40fada67786fac9af0827aea456a7a8f",
+                            "882c0fc7fec1588fa6086095e0dd553e",
+                            "c1ea3e27ef772ac4cff014dce1b29444",
+                            "2a456d32032c45e628365cc602f28927",
+                            "97aa877ff89ab9c676c8cfff1db0932d",
+                            "29e6185411381e4beb7c8181750617b5",
+                            "6c74e3370373eff434be22de35454e5d",
+                            "a5ec9b39ffaee3a22dd2e9b66657a303",
+                            "71408f844a47e5af8fd1b91bf37b6937",
+                            "7b41f21dec55d91bbbd394e8bda7029c",
+                            "17875bb257ef068f6adf2da764674d97",
+                            "0068def964e27c6de3a26fab62daffab",
+                            "caba363742f31674a8ee4c2db5fb2a56",
+                            "3ed522b4fcaf20de59c42ac4e1197084",
+                            "705c395f03b1bff4e1a78c83f9523989",
+                            "c05639a251a2dbc2bb7c23d326e79724",
+                            "394458a8b90ae8328073265ffc4ca8a4",
+                            "a06e3fd4f4598438f1cf7a3e3eb5ecff",
+                            "b25024aca893e66a032992c7e1587df9",
+                            "9be54436dba2b318b395a321633dbd18",
+                            "9ca71de172aac5f51834ab291ed3bf75",
+                            "d50371592d5efdedb51cb05c4a56b439",
+                            "3a791950f2f1f3d797afb5d0bac81dbc"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnpackRequest"
+              }
+            }
+          }
+        },
+        "description": "Accepts a CloudCoin in base64 encoded string, unpacks it and returns an array of cloudcoins",
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/tasks/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a task",
+        "tags": [
+          "API"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskResponse"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-tasks-id",
+        "description": "Returns task by Id",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "id",
+            "description": "Task ID"
+          }
+        ]
+      }
+    },
+    "/export": {
+      "post": {
+        "summary": "Export",
+        "operationId": "post-export",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Exports coins from a wallet. It may call 'break' if necessary",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportRequest"
+              }
+            }
+          }
+        },
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/transfer": {
+      "post": {
+        "summary": "",
+        "operationId": "post-transfer",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Transfers coins from a wallet to another wallet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deposit": {
+      "post": {
+        "summary": "",
+        "operationId": "post-deposit",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Deposits coins from a local Wallet to a Sky Wallet. It returns the same response as Pown or Import",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepositRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/info": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-info"
+      }
+    },
+    "/news": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-news"
+      }
+    },
+    "/skywallets": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-skywallets",
+        "description": "Gets a list of all user's SkyWallets",
+        "parameters": [
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "list_only",
+            "description": "Only list the names of skywallets without sending request to the RAIDA"
+          }
+        ]
+      },
+      "post": {
+        "summary": "",
+        "operationId": "post-skywallets",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Creates a SkyWallet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSkyWalletRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/skywallets/{name}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "name",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    }
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "status": "error",
+                      "payload": {
+                        "code": 0,
+                        "message": "string",
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-skywallets-name",
+        "description": "Retrieves info about a SkyWallet"
+      },
+      "delete": {
+        "summary": "",
+        "operationId": "delete-skywallets-name",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Deletes a skywallet"
+      }
+    },
+    "/freecoin": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-freecoin",
+        "description": "Gets a freecoin"
+      }
+    },
+    "/settings": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SettingsResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-settings"
+      },
+      "post": {
+        "summary": "",
+        "operationId": "post-settings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Settings"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/withdraw": {
+      "post": {
+        "summary": "",
+        "operationId": "post-withdraw",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    }
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "status": "error",
+                      "payload": {
+                        "code": 0,
+                        "message": "string",
+                        "details": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Withdraws coins from a SkyVault and puts them to a Local Wallet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WithdrawRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/skytransfer": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TransferTaskResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-skytransfer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkyTransferRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "post": {
+        "summary": "",
+        "operationId": "post-health",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Runs a Health Check over a Local Wallet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HealthCheckRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fix": {
+      "post": {
+        "summary": "",
+        "operationId": "post-fix",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Fixes coins after Import or Pown",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FixRequest"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "",
+        "operationId": "put-fix",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Fixes all coins in the fracked folder",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FixPutRequest"
+              }
+            }
+          },
+          "description": ""
+        }
+      }
+    },
+    "/skyhealth": {
+      "post": {
+        "summary": "",
+        "operationId": "post-skyhealth",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkyHealthRequest"
+              }
+            }
+          },
+          "description": ""
+        }
+      }
+    },
+    "/statements": {
+      "delete": {
+        "summary": "",
+        "operationId": "delete-statements",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteStatementsRequest"
+              }
+            }
+          },
+          "description": ""
+        }
+      }
+    },
+    "/skydetect": {
+      "post": {
+        "summary": "",
+        "operationId": "post-skydetect",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkyDetectRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/skyfix": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-skyfix"
+      },
+      "post": {
+        "summary": "",
+        "operationId": "post-skyfix",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkyFixRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/backup": {
+      "post": {
+        "summary": "",
+        "operationId": "post-backup",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TaskResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Backups a wallet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BackupRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/skybackup": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-skybackup"
+      },
+      "post": {
+        "summary": "",
+        "operationId": "post-skybackup",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkyBackupRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{name}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "name",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "delete": {
+        "summary": "",
+        "operationId": "delete-transactions-name",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "Deletes all transactions in the wallet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          },
+          "description": ""
+        }
+      },
+      "get": {
+        "summary": "",
+        "operationId": "get-transactions-name",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/GetTransactionsResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{name}/{guid}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "name",
+          "in": "path",
+          "required": true
+        },
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "guid",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/GetTransactionResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-transactions-name-guid",
+        "description": "Receives transaction details"
+      }
+    },
+    "/filepicker": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/FilePickerResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-filepicker",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "type",
+            "description": "\"file\" or \"folder\""
+          }
+        ]
+      }
+    },
+    "/senderhistory": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SenderHistoryResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-senderhistory",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "pattern",
+            "description": "Regex (filter) of the returned senders. Can be empty."
+          }
+        ]
+      }
+    },
+    "/wallets/{name}/leftovers": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "name",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/WalletResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-wallets-name-leftovers",
+        "description": "Checks if there are coins in the Suspect Folder"
+      }
+    },
+    "/skytransactions/{name}/{guid}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "name",
+          "in": "path",
+          "required": true
+        },
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "guid",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/GetSkyTransactionsResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-skytransactions-name-guid",
+        "description": "Returns a locat-saved transaction for a skywallet\nname - skywallet name\nguid - ID of the transaction"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "title": "ErrorResponse",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "error"
+            ]
+          },
+          "payload": {
+            "$ref": "#/components/schemas/ErrorPayload"
+          }
+        },
+        "required": [
+          "status",
+          "payload"
+        ],
+        "x-examples": {
+          "example-1": {
+            "status": "error",
+            "payload": {
+              "code": 4115,
+              "message": "Wallet not found",
+              "details": null
+            }
+          }
+        }
+      },
+      "ErrorPayload": {
+        "title": "ErrorPayload",
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Error Code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error Text Description"
+          },
+          "details": {
+            "type": "object",
+            "description": "Error Details. May vary depending on the error"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ]
+      },
+      "Wallet": {
+        "title": "Wallet",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "integer"
+          },
+          "denominations": {
+            "type": "object",
+            "properties": {
+              "1": {
+                "type": "integer"
+              },
+              "5": {
+                "type": "integer"
+              },
+              "25": {
+                "type": "integer"
+              },
+              "100": {
+                "type": "integer"
+              },
+              "250": {
+                "type": "integer"
+              }
+            }
+          },
+          "contents": {
+            "type": "array",
+            "description": "Array of the serial numbers. May be empty",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "transactions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            }
+          },
+          "email": {
+            "type": "string"
+          },
+          "password_hash": {
+            "type": "string"
+          }
+        }
+      },
+      "WalletsResponse": {
+        "title": "WalletsResponse",
+        "type": "object",
+        "x-examples": [
+          {
+            "status": "success",
+            "payload": [
+              {
+                "name": "string",
+                "balance": 120,
+                "denominations": {
+                  "1": 0,
+                  "5": 4,
+                  "25": 0,
+                  "100": 1,
+                  "250": 0
+                }
+              }
+            ]
+          }
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "success"
+            ]
+          },
+          "payload": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Wallet"
+            }
+          }
+        }
+      },
+      "CreateWalletRequest": {
+        "title": "CreateWalletRequest",
+        "type": "object",
+        "x-examples": [
+          {
+            "name": "My Wallet"
+          }
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Wallet name"
+          },
+          "email": {
+            "type": "string",
+            "description": "Recovery Email"
+          },
+          "password": {
+            "type": "string",
+            "description": "Encryption password"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "SuccessResponse": {
+        "title": "SuccessResponse",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "success"
+            ]
+          },
+          "payload": {
+            "type": "object"
+          }
+        }
+      },
+      "WalletResponse": {
+        "title": "WalletResponse",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "success"
+            ]
+          },
+          "payload": {
+            "$ref": "#/components/schemas/Wallet"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "x-examples": [
+          {
+            "status": "success",
+            "payload": {
+              "name": "my wallet",
+              "balance": 110,
+              "denominations": {
+                "1": 0,
+                "5": 2,
+                "25": 0,
+                "100": 1,
+                "250": 0
+              }
+            }
+          }
+        ]
+      },
+      "TaskResponse": {
+        "title": "TaskResponse",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "success"
+            ]
+          },
+          "payload": {
+            "$ref": "#/components/schemas/Task"
+          }
+        },
+        "required": [
+          "status",
+          "payload"
+        ],
+        "x-examples": [
+          {
+            "status": "success",
+            "payload": {
+              "id": "5661393a-3ca2-4397-9c5e-fe097b1285cc",
+              "status": "running",
+              "progress": 0,
+              "started": 1632039043,
+              "finished": 0,
+              "data": {}
+            }
+          }
+        ]
+      },
+      "Task": {
+        "title": "Task",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Task UUID"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "running",
+              "completed"
+            ]
+          },
+          "progress": {
+            "type": "number"
+          },
+          "started": {
+            "type": "integer",
+            "description": "Timestamp"
+          },
+          "finished": {
+            "type": "integer",
+            "description": "Timestamp"
+          },
+          "data": {
+            "description": "When task finishes this field is populated depending of the task contents",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/EchoTaskResponse"
+              },
+              {
+                "$ref": "#/components/schemas/DetectTaskResponse"
+              },
+              {
+                "$ref": "#/components/schemas/PownTaskResponse"
+              },
+              {
+                "$ref": "#/components/schemas/TransferTaskResponse"
+              },
+              {
+                "$ref": "#/components/schemas/GetSkywalletTaskResponse"
+              },
+              {
+                "$ref": "#/components/schemas/SuccessResponse"
+              },
+              {
+                "$ref": "#/components/schemas/FreeCoinTaskResponse"
+              },
+              {
+                "$ref": "#/components/schemas/WithdrawTaskResponse"
+              },
+              {
+                "$ref": "#/components/schemas/SkyFixTaskResponse"
+              },
+              {
+                "$ref": "#/components/schemas/ImportTaskResponse"
+              },
+              {
+                "$ref": "#/components/schemas/SkyExportTaskResponse"
+              },
+              {
+                "$ref": "#/components/schemas/BackupTaskResponse"
+              },
+              {
+                "$ref": "#/components/schemas/SkyBackupTaskResponse"
+              }
+            ]
+          },
+          "message": {
+            "type": "string",
+            "description": "Task message"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "progress",
+          "started",
+          "finished",
+          "data",
+          "message"
+        ]
+      },
+      "EchoTaskResponse": {
+        "title": "EchoTaskResponse",
+        "type": "object",
+        "properties": {
+          "online": {
+            "type": "integer",
+            "description": "Number of online servers"
+          },
+          "pownstring": {
+            "type": "string",
+            "description": "25 characters, e - error, p - pass, f - fail, n - network error"
+          },
+          "pownarray": {
+            "type": "array",
+            "description": "the same as pownstring but contains numbers instead of characters",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "required": [
+          "online",
+          "pownstring",
+          "pownarray"
+        ],
+        "x-examples": [
+          {
+            "online": 24,
+            "pownstring": "epppppppppppppppppppppppp",
+            "pownarray": [
+              2,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "CoinPown": {
+        "title": "CoinPown",
+        "type": "object",
+        "x-examples": [
+          {
+            "sn": 10,
+            "ans": [
+              "6de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010"
+            ],
+            "pans": [
+              "6de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010"
+            ]
+          }
+        ],
+        "properties": {
+          "sn": {
+            "type": "integer",
+            "description": "Serial Number"
+          },
+          "ans": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pans": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "sn",
+          "ans",
+          "pans"
+        ]
+      },
+      "DetectRequest": {
+        "title": "DetectRequest",
+        "type": "object",
+        "properties": {
+          "coins": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CoinDetect"
+            }
+          }
+        }
+      },
+      "CoinDetect": {
+        "title": "CoinDetect",
+        "type": "object",
+        "x-examples": [
+          {
+            "sn": 10,
+            "ans": [
+              "6de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010",
+              "1de9439834c9147569741d3c9c9fc010"
+            ]
+          }
+        ],
+        "properties": {
+          "sn": {
+            "type": "integer"
+          },
+          "ans": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "coin_type": {
+            "type": "number",
+            "description": "coin type. 0 is sky, 1 is cc"
+          }
+        },
+        "required": [
+          "sn",
+          "ans"
+        ]
+      },
+      "DetectTaskResponse": {
+        "title": "DetectTaskResponse",
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer"
+          },
+          "authentic": {
+            "type": "integer"
+          },
+          "fracked": {
+            "type": "integer"
+          },
+          "limbo": {
+            "type": "integer"
+          },
+          "unknown": {
+            "type": "integer"
+          },
+          "coins": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DetectCoinResult"
+            }
+          }
+        }
+      },
+      "PownTaskResponse": {
+        "title": "PownTaskResponse",
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer"
+          },
+          "authentic": {
+            "type": "integer"
+          },
+          "fracked": {
+            "type": "integer"
+          },
+          "limbo": {
+            "type": "integer"
+          },
+          "unknown": {
+            "type": "integer"
+          },
+          "coins": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DetectCoinResult"
+            }
+          },
+          "tickets": {
+            "type": "array",
+            "description": "Array of array of tickets. Each item is a batch array of 25 tickets",
+            "items": {
+              "type": "array",
+              "items": {}
+            }
+          },
+          "details": {
+            "type": "array",
+            "description": "Array of errors. Each batch is an array of 25 errors from raida servers. If an error occured during the POWN operation this value will hold the errors description from 25 raida servers for each batch",
+            "items": {
+              "type": "array",
+              "items": {}
+            }
+          }
+        },
+        "required": [
+          "total",
+          "authentic",
+          "fracked",
+          "limbo",
+          "unknown",
+          "coins",
+          "tickets",
+          "details"
+        ]
+      },
+      "DetectCoinResult": {
+        "title": "DetectCoinResponse",
+        "type": "object",
+        "properties": {
+          "sn": {
+            "type": "integer"
+          },
+          "pownstring": {
+            "type": "string"
+          },
+          "result": {
+            "type": "string",
+            "enum": [
+              "Counterfeit",
+              "Authentic",
+              "Fracked",
+              "Limbo"
+            ]
+          }
+        },
+        "required": [
+          "sn",
+          "pownstring",
+          "result"
+        ]
+      },
+      "PownRequest": {
+        "title": "PownRequest",
+        "type": "object",
+        "properties": {
+          "coins": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CoinPown"
+            }
+          }
+        },
+        "x-examples": [
+          {
+            "coins": [
+              {
+                "sn": 10,
+                "ans": [
+                  "6de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010"
+                ],
+                "pans": [
+                  "6de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010",
+                  "1de9439834c9147569741d3c9c9fc010"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ImportRequest": {
+        "title": "ImportRequest",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Wallet name"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportItem"
+            }
+          },
+          "tag": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "items"
+        ]
+      },
+      "ImportItem": {
+        "title": "ImportItem",
+        "type": "object",
+        "x-examples": [
+          {
+            "type": "file",
+            "data": "/home/alexander/800.CloudCoin.rn.stack"
+          },
+          {
+            "type": "inline",
+            "data": "AAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAABDmN3SubxKUDprNwgpQgRCToxhBD7r5A8UV8M7JZ4O5/usYPsNwbzklb7jhsQ/xV3Jv83yffj5aKWJF0b7xd1b4Kjcd0KjFpH0rYUyCPsziGekNirP4YpQgjO2r/wIktscU0OubUABvnMQSMTQ/ZUElk+YbPweixC05P53lvM53ebM+mXe5G+VaJ3Bcs6Ac70TfCMQpYowtxGAJNLasuFL6QULNAQRBTfjfZxud2oQ5oA3SU4BsvMzVvLF+A5cr6waBufVWTJ1rkVSOs0oJTCZZoiSJnO4cXOIO8gjh2P+kQhisje6M7GLYuaTyztMzMY2IFuquYyDyrfIAHXLnv0Q/SXRQ4IVdK3nmCCyR5kOtqyW+S7xv/LsufAYu2ED16ipij2KSkqP/Iv8OIACAk2TsRvTVDudGHHUt2a8z4l47ynIaadC/duM0uhHgr4JkLB9ZLy1N0EXpQW1x10gJdZt9mRfmoBHTv6gV/9N2fSuqdlSL3FJjHbzLnAOnVBX6GBo/Yn24LVDL4gOcglDLT2X"
+          }
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "inline",
+              "file"
+            ]
+          },
+          "data": {
+            "type": "string",
+            "description": "base64 data or full file path"
+          }
+        },
+        "required": [
+          "type",
+          "data"
+        ]
+      },
+      "CloudCoin": {
+        "title": "CloudCoin",
+        "type": "object",
+        "properties": {
+          "sn": {
+            "type": "integer",
+            "description": "Serial Number"
+          },
+          "ans": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pownstring": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "sn",
+          "ans"
+        ],
+        "x-examples": [
+          {
+            "sn": 1280910,
+            "ans": [
+              "33f726eb987f9c60c47dc96768c8f74c",
+              "7332b296fea1b99180986cbffdcd1165",
+              "40fada67786fac9af0827aea456a7a8f",
+              "882c0fc7fec1588fa6086095e0dd553e",
+              "c1ea3e27ef772ac4cff014dce1b29444",
+              "2a456d32032c45e628365cc602f28927",
+              "97aa877ff89ab9c676c8cfff1db0932d",
+              "29e6185411381e4beb7c8181750617b5",
+              "6c74e3370373eff434be22de35454e5d",
+              "a5ec9b39ffaee3a22dd2e9b66657a303",
+              "71408f844a47e5af8fd1b91bf37b6937",
+              "7b41f21dec55d91bbbd394e8bda7029c",
+              "17875bb257ef068f6adf2da764674d97",
+              "0068def964e27c6de3a26fab62daffab",
+              "caba363742f31674a8ee4c2db5fb2a56",
+              "3ed522b4fcaf20de59c42ac4e1197084",
+              "705c395f03b1bff4e1a78c83f9523989",
+              "c05639a251a2dbc2bb7c23d326e79724",
+              "394458a8b90ae8328073265ffc4ca8a4",
+              "a06e3fd4f4598438f1cf7a3e3eb5ecff",
+              "b25024aca893e66a032992c7e1587df9",
+              "9be54436dba2b318b395a321633dbd18",
+              "9ca71de172aac5f51834ab291ed3bf75",
+              "d50371592d5efdedb51cb05c4a56b439",
+              "3a791950f2f1f3d797afb5d0bac81dbc"
+            ]
+          }
+        ]
+      },
+      "UnpackResponse": {
+        "title": "UnpackResponse",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "success"
+            ]
+          },
+          "payload": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CloudCoin"
+            }
+          }
+        },
+        "required": [
+          "status",
+          "payload"
+        ],
+        "x-examples": [
+          {
+            "status": "success",
+            "payload": [
+              {
+                "sn": 1280910,
+                "ans": [
+                  "33f726eb987f9c60c47dc96768c8f74c",
+                  "7332b296fea1b99180986cbffdcd1165",
+                  "40fada67786fac9af0827aea456a7a8f",
+                  "882c0fc7fec1588fa6086095e0dd553e",
+                  "c1ea3e27ef772ac4cff014dce1b29444",
+                  "2a456d32032c45e628365cc602f28927",
+                  "97aa877ff89ab9c676c8cfff1db0932d",
+                  "29e6185411381e4beb7c8181750617b5",
+                  "6c74e3370373eff434be22de35454e5d",
+                  "a5ec9b39ffaee3a22dd2e9b66657a303",
+                  "71408f844a47e5af8fd1b91bf37b6937",
+                  "7b41f21dec55d91bbbd394e8bda7029c",
+                  "17875bb257ef068f6adf2da764674d97",
+                  "0068def964e27c6de3a26fab62daffab",
+                  "caba363742f31674a8ee4c2db5fb2a56",
+                  "3ed522b4fcaf20de59c42ac4e1197084",
+                  "705c395f03b1bff4e1a78c83f9523989",
+                  "c05639a251a2dbc2bb7c23d326e79724",
+                  "394458a8b90ae8328073265ffc4ca8a4",
+                  "a06e3fd4f4598438f1cf7a3e3eb5ecff",
+                  "b25024aca893e66a032992c7e1587df9",
+                  "9be54436dba2b318b395a321633dbd18",
+                  "9ca71de172aac5f51834ab291ed3bf75",
+                  "d50371592d5efdedb51cb05c4a56b439",
+                  "3a791950f2f1f3d797afb5d0bac81dbc"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "UnpackRequest": {
+        "title": "UnpackRequest",
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "description": "Base64 encoded coin(s)"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "TransferTaskResponse": {
+        "title": "TransferTaskResponse",
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "description": "Base64-encoded PNG file with coins inside"
+          }
+        },
+        "required": [
+          "amount"
+        ],
+        "x-examples": {
+          "example-1": {
+            "amount": 5
+          }
+        }
+      },
+      "ExportRequest": {
+        "title": "ExportRequest",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "name": "my wallet",
+            "amount": 10,
+            "tag": "From John",
+            "type": "png"
+          }
+        },
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Wallet name"
+          },
+          "amount": {
+            "type": "integer"
+          },
+          "tag": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "description": "Export type. Either png or zip",
+            "enum": [
+              "png",
+              "zip"
+            ]
+          },
+          "folder": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "amount",
+          "tag",
+          "folder"
+        ]
+      },
+      "Transaction": {
+        "title": "Transaction",
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "datetime": {
+            "type": "integer"
+          },
+          "receiptid": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "TransferRequest": {
+        "title": "TransferRequest",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "srcname": "wallet1",
+            "dstname": "wallet2",
+            "amount": 10,
+            "tag": "my transfer"
+          }
+        },
+        "properties": {
+          "srcname": {
+            "type": "string"
+          },
+          "dstname": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer"
+          },
+          "tag": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "srcname",
+          "dstname",
+          "amount",
+          "tag"
+        ]
+      },
+      "DepositRequest": {
+        "title": "DepositRequest",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "name": "my wallet",
+            "to": 4,
+            "amount": 400,
+            "tag": "My Deposit"
+          }
+        },
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "to": {
+            "type": "integer",
+            "description": "Destination SkyWallet Serial Number"
+          },
+          "amount": {
+            "type": "integer",
+            "description": "Amount to deposit"
+          },
+          "tag": {
+            "type": "string"
+          },
+          "toName": {
+            "type": "string",
+            "description": "SkyWallet name (can be used instead of 'to')"
+          }
+        },
+        "required": [
+          "name",
+          "amount",
+          "tag"
+        ]
+      },
+      "InfoResponse": {
+        "title": "InfoResponse",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "success"
+            ]
+          },
+          "payload": {
+            "$ref": "#/components/schemas/Info"
+          }
+        }
+      },
+      "Info": {
+        "title": "Info",
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string"
+          }
+        }
+      },
+      "NewsResponse": {
+        "title": "NewsResponse",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "success"
+            ]
+          },
+          "payload": {
+            "$ref": "#/components/schemas/NewsResponse"
+          }
+        }
+      },
+      "News": {
+        "title": "News",
+        "type": "object",
+        "description": "JSON Feed v1",
+        "properties": {
+          "version": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NewsItem"
+            }
+          }
+        }
+      },
+      "NewsItem": {
+        "title": "NewsItem",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "content_html": {
+            "type": "string"
+          },
+          "content_text": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "date_published": {
+            "type": "string"
+          },
+          "author": {
+            "$ref": "#/components/schemas/NewsAuthor"
+          }
+        },
+        "description": "JSON Feed v1"
+      },
+      "NewsAuthor": {
+        "title": "NewsAuthor",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateSkyWalletRequest": {
+        "title": "CreateSkyWalletRequest",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Fully Qualified Domain Name"
+          },
+          "coin": {
+            "$ref": "#/components/schemas/CoinDetect"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "x-examples": {
+          "example-1": {
+            "name": "myskywallet.cc",
+            "coin": {
+              "sn": 10,
+              "ans": [
+                "96c980b00426c4225c58c8c89fafc196",
+                "66d347e2de8adbb67bdb3efcbfdc3d67",
+                "8c954cec6f9b5fd87e06a7011f4df410",
+                "55e3efd402207759458ca78cd6b8514c",
+                "cc6c3b1fd649560a75a7f1c5c82b5a5e",
+                "44375e3a62dfe0217d8935bc7ad5fb3e",
+                "ce0ecdc144835ec6541c14ee0d1e2789",
+                "5b572662729cbd4a45f64fa74def8bfc",
+                "b6759af9af90702e749a969656b551d5",
+                "b6efd7100787f761264d86b04b8b65fb",
+                "ed1382dc20e9bf44c083134947945d5b",
+                "b3aae00808a8de8f7cb7efcda66bc966",
+                "8459ac1a75ecf11b4585ab3272693b78",
+                "117334e56273c6a68478b791c7c74df7",
+                "eecef3c922af9f31536694c3b22b497c",
+                "9687087d42a338189000c6455ecde5ce",
+                "386de6c7d9f441d9c27efcb3137f9bb3",
+                "c48047bba44880f8ff09ffaa0bae391e",
+                "a39cbb782f7ef76ebd14e2cab7c147b9",
+                "64c605ff061ee17a2543d9de1c8ccd14",
+                "5c66cad975312b4b66bbc0e691ccafa7",
+                "61fafbbd792e1aebfa4b5b0007d00654",
+                "d9d33eb9332e90aa7d2982ef9e17f155",
+                "563e37347ed089e05496300757750c78",
+                "4830e5d866fd2bcf0a7b491adbc2de6a"
+              ]
+            }
+          }
+        }
+      },
+      "DeleteSkyWalletRequest": {
+        "title": "DeleteSkyWalletRequest",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Fully Qualified Domain Name"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "GetSkywalletTaskResponse": {
+        "title": "GetSkywalletTaskResponse",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "integer"
+          },
+          "denominations": {
+            "type": "object",
+            "properties": {
+              "1": {
+                "type": "integer"
+              },
+              "5": {
+                "type": "integer"
+              },
+              "25": {
+                "type": "integer"
+              },
+              "100": {
+                "type": "integer"
+              },
+              "250": {
+                "type": "integer"
+              }
+            }
+          },
+          "contents": {
+            "type": "array",
+            "items": {}
+          },
+          "idcoin": {
+            "$ref": "#/components/schemas/CloudCoin"
+          },
+          "statements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Statement"
+            }
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "x-examples": {
+          "example-1": {
+            "name": "string",
+            "balance": 0,
+            "denominations": {
+              "1": 0,
+              "5": 0,
+              "25": 0,
+              "100": 0,
+              "250": 0
+            },
+            "contents": [
+              null
+            ],
+            "idcoin": {
+              "sn": 0,
+              "ans": [
+                "string"
+              ],
+              "pownstring": "string"
+            },
+            "statements": [
+              {
+                "guid": "string",
+                "type": "string",
+                "amount": 0,
+                "time": "string",
+                "memo": "string"
+              }
+            ]
+          }
+        }
+      },
+      "FreeCoinTaskResponse": {
+        "title": "FreeCoinTaskResponse",
+        "type": "object",
+        "properties": {
+          "sn": {
+            "type": "integer"
+          },
+          "ans": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Settings": {
+        "title": "SettingsResponse",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "default_timeout_mult": 100,
+            "echo_timeout_mult": 50,
+            "max_notes": 100
+          }
+        },
+        "properties": {
+          "default_timeout_mult": {
+            "type": "integer",
+            "description": "Timeout multiplier for all services"
+          },
+          "echo_timeout_mult": {
+            "type": "integer",
+            "description": "Timeout multiplier for echo"
+          },
+          "max_notes": {
+            "type": "integer",
+            "description": "Maximum notes to send at a time"
+          },
+          "change_server_sn": {
+            "type": "integer"
+          },
+          "local_raidas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "use_local_raidas": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SettingsResponse": {
+        "title": "SettingsResponse",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "success"
+            ]
+          },
+          "payload": {
+            "$ref": "#/components/schemas/Settings"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "x-examples": {
+          "example-1": {
+            "status": "success",
+            "payload": {
+              "default_timeout_mult": 20,
+              "echo_timeout_mult": 10,
+              "max_notes": 100
+            }
+          }
+        }
+      },
+      "Statement": {
+        "title": "Statement",
+        "type": "object",
+        "properties": {
+          "guid": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer"
+          },
+          "time": {
+            "type": "string"
+          },
+          "memo": {
+            "type": "string"
+          }
+        }
+      },
+      "WithdrawTaskResponse": {
+        "title": "WithdrawTaskResponse",
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number"
+          }
+        }
+      },
+      "WithdrawRequest": {
+        "title": "WithdrawRequest",
+        "type": "object",
+        "properties": {
+          "srcname": {
+            "type": "string",
+            "description": "SkyVault"
+          },
+          "dstname": {
+            "type": "string",
+            "description": "Local Wallet"
+          },
+          "amount": {
+            "type": "integer"
+          },
+          "tag": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "srcname",
+          "dstname",
+          "amount"
+        ],
+        "x-examples": {
+          "example-1": {
+            "srcname": "my.skyvault.cc",
+            "dstname": "mywallet",
+            "amount": 10,
+            "tag": "memo"
+          }
+        }
+      },
+      "SkyTransferRequest": {
+        "title": "SkyTransferRequest",
+        "type": "object",
+        "properties": {
+          "srcname": {
+            "type": "string"
+          },
+          "dstname": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer"
+          },
+          "tag": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "srcname",
+          "dstname",
+          "amount",
+          "tag"
+        ]
+      },
+      "HealthCheckRequest": {
+        "title": "HealthCheckRequest",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "PownItem": {
+        "title": "PownItem",
+        "type": "object",
+        "properties": {
+          "sn": {
+            "type": "integer"
+          },
+          "pownstring": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "sn",
+          "pownstring"
+        ],
+        "x-examples": {
+          "example-1": {
+            "sn": 10,
+            "pownstring": "pppfppppppppppppppppfpppp"
+          }
+        }
+      },
+      "FixRequest": {
+        "title": "FixRequest",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "pownitems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PownItem"
+            }
+          },
+          "tickets": {
+            "type": "array",
+            "description": "Array of tickets batches returned by Pown or Detect",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "name",
+          "pownitems"
+        ]
+      },
+      "FixPutRequest": {
+        "title": "FixPutRequest",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "SkyHealthRequest": {
+        "title": "SkyHealthRequest",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "DeleteStatementsRequest": {
+        "title": "DeleteStatementsRequest",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "description": "Deletes all statements"
+      },
+      "SkyDetectRequest": {
+        "title": "SkyDetectRequest",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "skywallet name"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "SkyFixRequest": {
+        "title": "SkyFixRequest",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "pownstring": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "pownstring"
+        ]
+      },
+      "SkyFixTaskResponse": {
+        "title": "SkyFixTaskResponse",
+        "type": "object",
+        "properties": {
+          "allfixed": {
+            "type": "boolean"
+          },
+          "number_fixed": {
+            "type": "integer"
+          },
+          "number_failed": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "allfixed",
+          "number_fixed"
+        ]
+      },
+      "BackupRequest": {
+        "title": "BackupRequest",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "folder": {
+            "type": "string"
+          },
+          "tag": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "folder",
+          "tag"
+        ]
+      },
+      "SkyBackupRequest": {
+        "title": "SkyBackupRequest",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "folder": {
+            "type": "string"
+          },
+          "tag": {
+            "type": "string"
+          }
+        }
+      },
+      "GetTransactionRequest": {
+        "title": "GetTransactionRequest",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "guid": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "guid"
+        ]
+      },
+      "GetTransactionResponse": {
+        "title": "GetTransactionResponse",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/TransactionDetail"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "TransactionDetail": {
+        "title": "TransactionDetail",
+        "type": "object",
+        "properties": {
+          "sn": {
+            "type": "integer"
+          },
+          "denomination": {
+            "type": "integer"
+          },
+          "pownstring": {
+            "type": "string"
+          },
+          "result": {
+            "type": "string"
+          }
+        }
+      },
+      "DeleteTransactionsRequest": {
+        "title": "DeleteTransactionsRequest",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateWalletRequest": {
+        "title": "UpdateWalletRequest",
+        "type": "object",
+        "properties": {
+          "new_name": {
+            "type": "string"
+          }
+        }
+      },
+      "FilePickerResponse": {
+        "title": "FilePickerResponse",
+        "type": "object",
+        "properties": {
+          "items_picked": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SenderHistoryResponse": {
+        "title": "SenderHistoryResponse",
+        "type": "object",
+        "properties": {
+          "names": {
+            "type": "array",
+            "description": "Array of senders",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "names"
+        ]
+      },
+      "GetTransactionsResponse": {
+        "title": "GetTransactionsResponse",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            }
+          }
+        }
+      },
+      "ImportTaskResponse": {
+        "title": "ImportTaskResponse",
+        "type": "object",
+        "properties": {
+          "receipt_id": {
+            "type": "string"
+          },
+          "pown_result": {
+            "$ref": "#/components/schemas/PownTaskResponse"
+          }
+        }
+      },
+      "BackupTaskResponse": {
+        "title": "BackupTaskResponse",
+        "type": "object",
+        "properties": {
+          "total_coins": {
+            "type": "number"
+          },
+          "file_name": {
+            "type": "string"
+          }
+        }
+      },
+      "SkyBackupTaskResponse": {
+        "title": "SkyBackupTaskResponse",
+        "type": "object",
+        "properties": {
+          "file_name": {
+            "type": "string"
+          }
+        }
+      },
+      "GetSkyTransactionsResponse": {
+        "title": "GetSkyTransactionsResponse",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "description": "\"deposit\", \"withdraw\" or \"transfer\""
+          },
+          "to": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransactionDetail"
+            }
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "API"
+    }
+  ]
+}
