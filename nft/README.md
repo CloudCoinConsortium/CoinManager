@@ -22,9 +22,12 @@ Coin Manager is setup to talk to CloudFlare, the most used DNS Hosting company. 
 1. Log into CloudFlare 
 2. At Home screen, pick the Domain that you want to add NFTs too. 
 3. At the Overview for that domain, scroll down and click on "Get your API token" on the lower right-hand side of the page.
+![Overview](0.png?raw=true "CloudFlare Overview")
 4. At the API Tokents page, click the "Creat Token" button.
+![Create API](1.png?raw=true "CloudFlare Create Token")
 5. In the list of API Token Templates, Chose the top one "Edit Zone DNS" and click the "Use template" button. 
 6. In the Create Token form, Set the Permissions to Zone, DNS, Edit.  Set Zone Resrouces to Include, Specific zone, yourdomain.com. Leave Client IP Address Filtering and TTL empty. Click on the "Contiue to summary" button. Then click "Create Token"
+![API Token](1.png?raw=true "CloudFlare API Token Create Token")
 7. The token is a long code with lowercase, upercase and numbers. Copy that and put it into the Coin Manager. Tools > Settings> NFT Publishing > "CloudFlare DNS Api Key".
 
 ### Web Server Upload Page 
