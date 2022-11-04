@@ -31,7 +31,13 @@ Coin Manager is setup to talk to CloudFlare, the most used DNS Hosting company. 
 7. The token is a long code with lowercase, upercase and numbers. Copy that and put it into the Coin Manager. Tools > Settings> NFT Publishing > "CloudFlare DNS Api Key".
 
 ### Web Server Upload Page 
+
+
 You will need a webserver that supports PHP. You can use the PHP page below. You will need to change the password in the page and then put this password in the Coin Manager > Tools > Settings> NFT Publishing > "CloudFlare DNS Api Key".
+
+Here is the PHP page you can put on your server: 
+https://github.com/CloudCoinConsortium/CoinManager/blob/main/nft/upload.php
+
 
 # NFT CLI
 
