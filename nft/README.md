@@ -1,14 +1,14 @@
 # Publishing NFTs So They Can Be Verified
 NOTE: Regardless if you are tech savvy or not, our support is here to help you publish your NFTs. If you have any problems, your first step should be to call support. 
 
-It is very easy to create NFTs using the Coin Manager once you have everything set up.
+It is very easy to create NFTs using the CloudCoin Manager once you have everything set up.
 
-Publishing NFTs means that  you will post a copy of the image and NFT description in a place that only you have access to.
-It is assumed that your domain name is owned and controlled by you. The only people who have access to your domains are the people who you grant access to. 
-Any art or descriptions that are found on your DNS or Webservers could only be put there by you. Therefore, NFT collectors can know that their NFTs are
+Publishing NFTs means that you will post a copy of the image and NFT description in a place that only you have access to.
+It is assumed that your domain name is owned and controlled by you. The only people who have access to your domains are the people you grant access to. 
+Any art or descriptions that are found on your DNS or web servers could only be put there by you. Therefore, NFT collectors can know that their NFTs are
 authentic by going to your domain and comparing what they own with what you published. This should make your NFTs more valuable.  
 
-When you publish your NFTs, CloudCoin Manager will contact your DNS server and command it to create a TXT record that cointains the location of the folder on your web page where the image and description of your NFTs are kept. Your NFTs will be given a FQDN (Fully Qaulified Domain Name) and this will become the name of your NFT. Suppose that you create an NFT and give it the title of "Jill-Having-Fun". Suppose the domain name you own is "happy-acres.com". Your NFT will become "Jill-Having-Fun.happy-acres.com". Your NFT becomes a PNG file with the name of "Jill-Having-Fun.happy-acres.com.ccnft.png". 
+When you publish your NFTs, the CloudCoin Manager will contact your DNS server and command it to create a TXT record that cointains the location of the folder on your web page where the image and description of your NFTs are kept. Your NFTs will be given a FQDN (Fully Qaulified Domain Name) and this will become the name of your NFT. Suppose that you create an NFT and give it the title of "Jill-Having-Fun". Suppose the domain name you own is "happy-acres.com". Your NFT will become "Jill-Having-Fun.happy-acres.com". Your NFT becomes a PNG file with the name of "Jill-Having-Fun.happy-acres.com.ccnft.png". 
 
 When a user wants to verify that you are the creator of your NFT, their CloudCoin Manager software will contact your DNS server and perform a TXT lookup for Jill-Having-Fun.happy-acres.com. Your DNS server will respond with something like "https://happy-acres.com/nft/Jill-Having-Fun". Then their CloudCoin Manager software will go to that URL and find a PNG and description file. The CloudCoin Manager will show your collector these files so they can compare them to what they have and verifty that the NFTs are authentic. 
 
